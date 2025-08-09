@@ -17,6 +17,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+<<<<<<< HEAD
 const getMe = catchAsync(async (req: Request, res: Response) => {
   const { userId } = req.user;
   const result = await UserServices.getMeFromDB(userId);
@@ -33,3 +34,8 @@ export const UserControllers = {
   createUser,
   getMe,
 };
+=======
+export const UserControllers = {
+  createUser,
+};
+>>>>>>> 62e5a74e95768bbf1ab9f69ad361c32de48bb0d5
