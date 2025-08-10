@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { TUser } from './user.interface';
 
-// Mongoose Schema তৈরি করা হচ্ছে
 const userSchema = new Schema<TUser>({
   name: {
     type: String,
@@ -18,7 +17,7 @@ const userSchema = new Schema<TUser>({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    select: 0, // ডিফল্টভাবে ডাটাবেস থেকে ইউজার খোঁজার সময় পাসওয়ার্ড আসবে না।
+    select: 0,
   },
   role: {
     type: String,
@@ -36,25 +35,19 @@ const userSchema = new Schema<TUser>({
   },
   currentStep: {
     type: Number,
-    enum: [1, 2, 3],
+    enum: [0, 1, 2, 3, 4], // 0 for failed, 4 for completed
     default: 1,
   },
 },
 {
-  timestamps: true, // createdAt এবং updatedAt ফিল্ড স্বয়ংক্রিয়ভাবে যোগ হবে।
+  timestamps: true,
 });
 
-
-// Mongoose pre-save middleware/hook
-// ডাটাবেসে সেভ করার আগে পাসওয়ার্ড হ্যাশ করার জন্য এই হুক ব্যবহার করা হচ্ছে।
 userSchema.pre('save', async function (next) {
-  // শুধুমাত্র যদি পাসওয়ার্ড পরিবর্তন করা হয়, তবেই এটি কাজ করবে।
   if (!this.isModified('password')) return next();
-
-  const saltRounds = 12; // .env ফাইল থেকে নেওয়া ভালো অনুশীলন।
+  const saltRounds = 12;
   this.password = await bcrypt.hash(this.password as string, saltRounds);
   next();
 });
 
-// Mongoose মডেল তৈরি করা হচ্ছে
 export const User = model<TUser>('User', userSchema);
