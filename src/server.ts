@@ -3,16 +3,14 @@ import app from "./app";
 import dotenv from "dotenv";
 import path from "path";
 
-// Loading .env file at the very beginning
 dotenv.config({ path: path.join(process.cwd(), ".env") });
 
-import config from "./config"; // Importing config after dotenv has been loaded
+import config from "./config";
 
 const port = config.port || 5000;
 
 async function main() {
   try {
-    // Ensure the database URL is not undefined before connecting
     if (!config.database_url) {
       throw new Error("DATABASE_URL is not defined in the .env file");
     }

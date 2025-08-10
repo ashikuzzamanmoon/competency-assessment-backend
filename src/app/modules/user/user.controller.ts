@@ -5,7 +5,7 @@ import { UserServices } from "./user.service";
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const result = await UserServices.createUserIntoDB(req.body);
 
-  // পাসওয়ার্ড ছাড়া ইউজার ডেটা পাঠানো হচ্ছে
+  // Sending user data without a password
   const userResponse = result.toObject();
   delete userResponse.password;
 
